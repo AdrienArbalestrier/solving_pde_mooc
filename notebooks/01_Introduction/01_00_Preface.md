@@ -38,12 +38,10 @@ Many models appearing in engineering or physical applications are mathematically
 
 By the end of the course, the student should have acquired the necessary skills to solve numerically equations such as the heat equation or Schrödinger's equation:  
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \frac{\partial T(\boldsymbol r,t)}{\partial t}  & = \alpha \Delta T(\boldsymbol r,t), &\hbox{Heat equation}\\
 i\hbar \frac{\partial \Psi(\boldsymbol r,t)}{\partial t} & = \left[ \frac{-\hbar^2}{2m}\Delta + V(\boldsymbol r,t) \right]\Psi(\boldsymbol r,t), &\hbox{Schrödinger equation}
-\end{aligned}
-$$
+\end{aligned}$$
 
 We don't further describing those equations here (it's not a problem if you have never heard about them), but we just emphasises that they both contain the laplacian operator
 
