@@ -13077,7 +13077,18 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><div class="copyright" property="vk:rights">&copy;
+<script type="text/x-mathjax-config">
+// Use shorter timeouts for file access and font loading
+MathJax.Ajax.timeout = 1000;
+MathJax.Hub.Register.StartupHook("HTML-CSS Jax Startup", function() {
+  MathJax.OutputJax["HTML-CSS"].Font.timeout = 1000;
+});
+
+// Set the window status to notify wkhtmltopdf when typesetting is finished
+MathJax.Hub.Queue(function() {
+  window.status = "finished-typesetting";
+});
+</script><p><div class="copyright" property="vk:rights">&copy;
   <span property="vk:dateCopyrighted">2020</span>
   <span property="vk:publisher">B. Knaepen & Y. Velizhanina</span>
 </div></p>
@@ -13104,12 +13115,10 @@ div#notebook {
 <h2 id="Philosophy-of-the-course">Philosophy of the course<a class="anchor-link" href="#Philosophy-of-the-course">&#182;</a></h2><p>Numerous scientific problems can only be addressed through modeling and computer analysis. This stems from the fact that a lot of these problems are complex and we cannot solve the corresponding models using only pen-and-paper.</p>
 <p>Many models appearing in engineering or physical applications are mathematically described by partial differential equations (PDEs) and the aim of this course is to provide a practical introduction to the relevant tools to solve them using computer algortihms. By practical we mean that we will not develop the theory behind PDEs and also avoid complex mathematical derivations of the numerical methods we describe below. Although these are beautiful subjects, they are often characterized by a steep learning curve and our objective is to get our hands on solving real problems as quickly as possible. In some places we nevertheless provide some mathematical background about the techniques we describe because they cannot be properly understood otherwise. In each case, we try to keep things simple and written in such a way that the corresponding section may be skipped at first reading.</p>
 <h2 id="Outline">Outline<a class="anchor-link" href="#Outline">&#182;</a></h2><p>By the end of the course, the student should have acquired the necessary skills to solve numerically equations such as the heat equation or Schrödinger's equation:</p>
-$$
-\begin{aligned}
+$$\begin{aligned}
 \frac{\partial T(\boldsymbol r,t)}{\partial t}  &amp; = \alpha \Delta T(\boldsymbol r,t), &amp;\hbox{Heat equation}\\
 i\hbar \frac{\partial \Psi(\boldsymbol r,t)}{\partial t} &amp; = \left[ \frac{-\hbar^2}{2m}\Delta + V(\boldsymbol r,t) \right]\Psi(\boldsymbol r,t), &amp;\hbox{Schrödinger equation}
-\end{aligned}
-$$<p>We don't further describing those equations here (it's not a problem if you have never heard about them), but we just emphasises that they both contain the laplacian operator</p>
+\end{aligned}$$<p>We don't further describing those equations here (it's not a problem if you have never heard about them), but we just emphasises that they both contain the laplacian operator</p>
 $$
  \Delta = \frac{\partial^2}{\partial x^2}+ \frac{\partial^2}{\partial y^2}+ \frac{\partial^2}{\partial z^2}
 $$<p>that makes them partial differential equations. Our main objective is then to formulate such operators numerically and to solve the resulting problems with computer algorithms. This also requires to complement the equations with suitable boundary conditions and to implement them consistently with the differential operators.</p>

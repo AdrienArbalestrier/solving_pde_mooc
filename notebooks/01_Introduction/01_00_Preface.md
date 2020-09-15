@@ -13,6 +13,19 @@ jupyter:
     name: python3
 ---
 
+<script type="text/x-mathjax-config">
+// Use shorter timeouts for file access and font loading
+MathJax.Ajax.timeout = 1000;
+MathJax.Hub.Register.StartupHook("HTML-CSS Jax Startup", function() {
+  MathJax.OutputJax["HTML-CSS"].Font.timeout = 1000;
+});
+
+// Set the window status to notify wkhtmltopdf when typesetting is finished
+MathJax.Hub.Queue(function() {
+  window.status = "finished-typesetting";
+});
+</script>
+
 <div class="copyright" property="vk:rights">&copy;
   <span property="vk:dateCopyrighted">2020</span>
   <span property="vk:publisher">B. Knaepen & Y. Velizhanina</span>
