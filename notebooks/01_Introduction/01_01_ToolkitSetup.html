@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>01_00_Preface</title>
+<title>01_01_ToolkitSetup</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13085,8 +13085,7 @@ MathJax.Hub.Queue(function() {
   <span property="vk:dateCopyrighted">2020</span>
   <span property="vk:publisher">B. Knaepen & Y. Velizhanina</span>
 </div></p>
-<h1 style="text-align: center">Numerical methods for partial differential equations</h1>
-<h1 style="text-align: center; font-size:18pt;  ">by Bernard Knaepen & Yelyzaveta Velizhanina</h1>
+<h1 style="text-align: center">Toolkit Setup</h1>
 </div>
 </div>
 </div>
@@ -13094,9 +13093,27 @@ MathJax.Hub.Queue(function() {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 class="nocount">Contents</h2><ol>
-<li><a href="#Philosophy-of-the-course">Philosophy of the course</a></li>
-<li><a href="#Outline">Outline</a></li>
-<li><a href="#Tools">Tools</a></li>
+<li><a href="#Python-and-why-Python">Python and why Python</a></li>
+<li><a href="#Get-to-know-Anaconda">Get to know Anaconda</a><ol>
+<li><a href="#Installing-Anaconda">Installing Anaconda</a>    </li>
+<li><a href="#Creating-a-conda-environment">Creating a conda environment</a></li>
+</ol>
+</li>
+<li><a href="#Get-to-know-Git">Get to know Git</a><ol>
+<li><a href="#Installing-Git">Installing Git</a>   </li>
+<li><a href="#Basic-usage">Basic usage</a>   <ol>
+<li><a href="#Git-repositories">Git repositories</a><ul>
+<li><a href="#Creating-local-Git-repository">Creating local Git repository</a></li>
+<li><a href="#Creating-remote-Git-repository">Creating remote Git repository</a></li>
+</ul>
+</li>
+<li><a href="#Git-branches">Git branches</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><a href="#Summary">Summary</a></li>
+<li><a href="#Troubleshooting">Troubleshooting</a></li>
 </ol>
 
 </div>
@@ -13105,38 +13122,362 @@ MathJax.Hub.Queue(function() {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Philosophy-of-the-course">Philosophy of the course<a class="anchor-link" href="#Philosophy-of-the-course">&#182;</a></h2><p>Numerous scientific problems can only be addressed through modeling and computer analysis. This stems from the fact that a lot of these problems are complex and we cannot solve the corresponding models using only pen-and-paper.</p>
-<p>Many models appearing in engineering or physical applications are mathematically described by partial differential equations (PDEs) and the aim of this course is to provide a practical introduction to the relevant tools to solve them using computer algortihms. By practical we mean that we will not develop the theory behind PDEs and also avoid complex mathematical derivations of the numerical methods we describe below. Although these are beautiful subjects, they are often characterized by a steep learning curve and our objective is to get our hands on solving real problems as quickly as possible. In some places we nevertheless provide some mathematical background about the techniques we describe because they cannot be properly understood otherwise. In each case, we try to keep things simple and written in such a way that the corresponding section may be skipped at first reading.</p>
-<h2 id="Outline">Outline<a class="anchor-link" href="#Outline">&#182;</a></h2><p>By the end of the course, the student should have acquired the necessary skills to solve numerically equations such as the heat equation or Schrödinger's equation:</p>
-$$\begin{aligned}
-\frac{\partial T(\boldsymbol r,t)}{\partial t}  &amp; = \alpha \Delta T(\boldsymbol r,t), &amp;\hbox{Heat equation}\\
-i\hbar \frac{\partial \Psi(\boldsymbol r,t)}{\partial t} &amp; = \left[ \frac{-\hbar^2}{2m}\Delta + V(\boldsymbol r,t) \right]\Psi(\boldsymbol r,t), &amp;\hbox{Schrödinger equation}
-\end{aligned}$$<p>We don't further describing those equations here (it's not a problem if you have never heard about them), but we just emphasises that they both contain the laplacian operator</p>
-$$
- \Delta = \frac{\partial^2}{\partial x^2}+ \frac{\partial^2}{\partial y^2}+ \frac{\partial^2}{\partial z^2}
-$$<p>that makes them partial differential equations. Our main objective is then to formulate such operators numerically and to solve the resulting problems with computer algorithms. This also requires to complement the equations with suitable boundary conditions and to implement them consistently with the differential operators.</p>
-<p>This course covers the following topics:</p>
+<h2 id="Python-and-why-Python">Python and why Python<a class="anchor-link" href="#Python-and-why-Python">&#182;</a></h2><p>All the pieces of code written in this course are written in Python 3. However, we try to make the required prior knowledge of Python as little as possible, and the reader is only expected to have a basic knowledge of any programming language and be familiar with concepts like variables, loops, conditional statements, functions etc. In fact, we also design the course in such a way that it can be viewed as a tutorial about Python numerical tools provided by numpy, matplotlib, scipy to name of few. Each time we need a new Python functionality, we try to thoroughly document it, so that the reader needs no prior knowledge of the different packages but rather learns to use them when progressing through the notebooks.</p>
+<p>Why do we choose Python?</p>
+<blockquote><p><a href="https://wiki.python.org/moin/BeginnersGuide/Overview" title="What is Python">Python</a> is a clear and powerful object-oriented programming language, comparable to Perl, Ruby, Scheme, or Java.</p>
+</blockquote>
+<p>Let's describe some of the <strong>pros &amp; cons</strong> of Python.</p>
+<p><strong>Pros:</strong></p>
 <ul>
-<li><p><strong>Integration of ordinary differential equations</strong></p>
-<p>Ordinary differential equations (ODEs), unlike partial differential equations, depend on only one variable. The ability to solve them is essential because we will consider many PDEs that are time dependent and need generalizations of the methods developped for ODEs.</p>
+<li><p><em>Simple and elegant syntax</em></p>
+<p>Makes Python easy to learn and Python codes easy to read.</p>
 </li>
-<li><p><strong>Finite difference schemes</strong></p>
-<p>In this chapter we describe the most intuitive way of computing spatial derivatives. It heavily relies on the Taylor's expansion of functions and how we can use the information in the neighborhood of a point to compute derivatives at that point.</p>
+<li><p><em>Interactive mode provided by IPython and Jupyter</em></p>
+<p>Makes debugging very easy.</p>
 </li>
-<li><p><strong>Resolution of partial differential equations</strong></p>
-<p>This part of the course combines the concepts discussed in the first two chapters and describes through examples how they can be used to solve PDEs.</p>
+<li><p><em>Large standard library</em></p>
+<p>provides diverse functionality.</p>
 </li>
-<li><p><strong>Iterative methods</strong></p>
-<p>Many of the techniques involved in solving ODEs or PDEs require to invert matrices. For low dimensional matrices, this can be done through standard elimination methods. For large matrices, such methods are prohibitively expensive and some approximate inversion techniques are needed. In this chapter we describe some of them belonging to the class of iterative methods.</p>
+<li><p><em>Flexible...</em></p>
+<p>...in terms of integration with other programming languages (C, C++, Java etc.).</p>
 </li>
-<li><p><strong>Fourier transform</strong></p>
-<p>In the chapter about finite difference schemes we have described an intuitive way to compute spatial derivatives. Here we introduce a more accurate technique that relies on the expansion of the unknown functions using a basis of functions. We illustrate the concepts introduced to solve problems with periodic boundary conditions.</p>
+<li><p><em>Free and open-source</em></p>
+<p>It means that Python can been freely used, modified and redistributed.</p>
 </li>
-<li><p><strong>Chebyshev discretisation</strong></p>
-<p>We conclude this course by giving a brief introduction on the Chebyshev spectral method. It also relies on the concept of Fourier transforms but the expansion basis is constructed using Chebyshev polynomials. This method is very accurate and well adapted to problems with physical boundaries as opposed to problems with periodic boundary conditions.</p>
+<li><p><em>Wide range of additional packages</em></p>
+<p>We are particularly interested in those providing tools for scientific programming (NumPy, SciPy...).</p>
 </li>
 </ul>
-<h2 id="Tools">Tools<a class="anchor-link" href="#Tools">&#182;</a></h2><p>The numerical resolution of PDEs obviously requires the use of a programming language and optionally some previously developped software packages. For this course we have decided to use the Python programming language and some of the SciPy (Scientific computing tools for Python) packages. In the next notebook - 00_01_ToolkitSetup - we say a few more words about this and also provide a complete set of instructions to install all the necessary tools required to get started with the course.</p>
+<p><strong>Cons:</strong></p>
+<ul>
+<li><p><em>Python is natively speed-limited</em></p>
+<p>Python is an <a href="https://www.freecodecamp.org/news/compiled-versus-interpreted-languages/" title="Interpreted vs compiled"><em>interpreted</em></a> language and cannot compete in speed with <a href="https://www.freecodecamp.org/news/compiled-versus-interpreted-languages/" title="Interpreted vs compiled"><em>compiled</em></a> languages, such as C.</p>
+</li>
+</ul>
+<p>While we've named only one disadvantage of Python, it makes Python inadequate in situations when the running speed of the program becomes crucial - for example, when doing large-scale simulations, or developing the core engine of a game.</p>
+<p>So, whenever you discover "the disadvantage" of the programming language, keep in mind, that it is very situation-dependant. In fact, you have a very important decision to take - is my choice of programming language reasonable in this particular case, or not?</p>
+<p>But for us Python is the perfect tool. Since we are solving <em>small</em> test problems in terms of computer resources, we are good. Moreover, it is highly probable that overall <em>we are not any slower than we'd be if we had chosen a C-based language</em>, as the development time, when programming in Python can be much smaller.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Get-to-know-Anaconda">Get to know Anaconda<a class="anchor-link" href="#Get-to-know-Anaconda">&#182;</a></h2><h3 id="Installing-Anaconda">Installing Anaconda<a class="anchor-link" href="#Installing-Anaconda">&#182;</a></h3><blockquote><p><a href="https://docs.anaconda.com" title="Anaconda">Anaconda</a> is a free, easy-to-install package manager, environment manager, and Python distribution with a collection of 1,500+ open source packages with free community support. Anaconda is platform-agnostic, so you can use it whether you are on Windows, macOS, or Linux.</p>
+</blockquote>
+<p>We will install Anaconda3, as it includes Python 3.x - the latest stable version of Python. Installing Anaconda will automatically install the most useful Python packages - probably including all those that we will require throughout the course. Though, there is always a possibility to install additional packages from the Anaconda repository.</p>
+<p>This installation file has been created in Jupyter Notebook. Jupyter Notebook provides an interactive shell for Python code, and is also included in the Anaconda distribution.</p>
+<p>Installation instructions are provided on the official <a href="https://docs.anaconda.com/anaconda/install/" title="Installation">website</a>, and are quite detailed. Click on this link and install the distribution suitable for your work machine. This is a prerequisite to follow this course.</p>
+<p>After Anaconda has been installed, we are all set to run Jupyter Notebook. Anaconda comes together with <em>anaconda-navigator</em>. This program provides a graphical interface to access Jupyter Notebook, QtConsole, Spyder etc. We recommend you learn how to work with Anaconda using the terminal, as, first, it will improve your skills of using terminal, and second, allow you to easily use conda package manager, create conda environments etc. - <em>programmers love the terminal</em>.</p>
+<p>First, let's see how we start Jupyter Notebook through the terminal.</p>
+<p>If you're on <strong>MacOS or Linux</strong>, the <a href="https://www.journaldev.com/41479/bashrc-file-in-linux" title="Bashrc">.bashrc file</a> on your machine must be updated with a path to anaconda3/bin during the installation, so that each time you start a new terminal session, all the programs contained in the anaconda3/bin directory are globally accessible. It means, that if you just type <code>jupyter notebook</code> in the command line, Jupyter Notebook should start running.</p>
+<p>If you're on <strong>Windows</strong> you should be you'll be able to see the program <em>Anaconda prompt</em> in the START menu just after installation. This application will start a terminal session with the content of anaconda3/bin also globally accessible.</p>
+<p>If the <code>jupyter notebook</code> command is not recognized in the terminal after installation, refer to the <a href="#troubleshooting1">Troubleshooting section</a>.</p>
+<h3 id="Creating-a-conda-environment">Creating a conda environment<a class="anchor-link" href="#Creating-a-conda-environment">&#182;</a></h3><blockquote><p>A <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/environments.html" title="conda environment">conda environment</a> is a directory that contains a specific collection of conda packages that you have installed. For example, you may have one environment with NumPy 1.7 and its dependencies, and another environment with NumPy 1.6 for legacy testing. If you change one environment, your other environments are not affected. You can easily activate or deactivate environments, which is how you switch between them.</p>
+</blockquote>
+<p>We propose that you create a conda virtual environment for the course, and start with installing additional componentq in this environment, so that you'll have all necessary tools in an isolated space, and also learn about conda environments.</p>
+<ul>
+<li><p>First, create an environment with a specific version of Python</p>
+
+<pre><code>  conda create -n course python=3.8.5
+
+</code></pre>
+<p><code>-n</code> is an argument for <code>conda create</code>, which has to be followed by the name of your environment. You can replace <code>course</code> with any name you prefer. We also specify, that we want the version of Python 3.8.5.</p>
+</li>
+<li><p>Next, activate your virtual environment:</p>
+
+<pre><code>  conda activate course</code></pre>
+</li>
+<li><p>Now, as virtual environment has been activated, you can use conda package manager to install some additional packages without specifying that you want them in <code>course</code>.</p>
+
+<pre><code>  conda install numpy scipy matplotlib jupyter
+  conda install -c conda-forge jupytext jupyter_contrib_nbextensions
+
+</code></pre>
+<p>Here <code>-c</code> refers to channel.</p>
+<blockquote><p><a href="https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/channels.html" title="conda channels">Conda channels</a> are the locations where packages are stored. They serve as the base for hosting and managing packages. Conda packages are downloaded from remote channels, which are URLs to directories containing conda packages. The conda command searches a default set of channels, and packages are automatically downloaded and updated from <a href="https://repo.anaconda.com/pkgs/">https://repo.anaconda.com/pkgs/</a>.</p>
+</blockquote>
+<p>conda-forge provides a remote conda channel distributing conda packages, which you sometimes cannot find in conda the <code>default</code> channel.</p>
+<p>We install the <code>jupytext</code> package, as it provides a possibility to save Jupyter notebooks as a simple Markdown file, and we also install <code>jupyter_contrib_nbextensions</code>, which contains a collection of extensions for Jupyter Notebook, in particular, support of LaTeX environments.</p>
+</li>
+<li><p>Open Jupyter Notebook and activate the necessary extensions (from the Edit menu).</p>
+</li>
+</ul>
+<p><img src="../figures/jupextensions.png"></p>
+<p>Now we are ready to go - we have a virtual environment, which includes all necessary Python packages, and we even activated extended support for LaTeX.</p>
+<p>In case you're wondering what LaTeX is,</p>
+<blockquote><p><a href="https://www.latex-project.org" title="LaTeX">LaTeX</a> is a high-quality typesetting system; it includes features designed for the production of technical and scientific documentation. LaTeX is the de facto standard for the communication and publication of scientific documents. LaTeX is available as free software.</p>
+</blockquote>
+<p>In order to quit the virtual environment, run:</p>
+
+<pre><code>    conda deactivate
+
+</code></pre>
+<p>or just close the terminal window if you don't need it anymore.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Get-to-know-Git">Get to know Git<a class="anchor-link" href="#Get-to-know-Git">&#182;</a></h2><h3 id="Installing-Git">Installing Git<a class="anchor-link" href="#Installing-Git">&#182;</a></h3><blockquote><p><a href="https://git-scm.com" title="Git">Git</a> is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.</p>
+</blockquote>
+<p>This description might be hard to comprehend at the moment, but you will learn better what is Git while working with it. What you have to know right now, is that thanks to Git, you can easily track the changes made to a project at different stages and compare all of them to each other; you can recover any older version of your project; furthermore, you can have separate <em>branches</em>, each of which stores a different version of your project without any conflict between them. Git is also a great tool for people collaborating on a project. It allows several developpers to work independently on different pieces of code and seemingly merge their contributions.</p>
+<p>Before digging deeper into the Git toolkit, let's install it.</p>
+<ul>
+<li><p>If you're on Windows, you can download Git from the <a href="https://git-scm.com/download/win" title="Git Win Download">official website</a> and install it with graphical installer. If, during installation, you choose all the default options, you will have git available in your Anaconda prompt.</p>
+</li>
+<li><p>If you're on MacOS</p>
+<ul>
+<li><p>10.9 Mavericks or later</p>
+<p>Simply run</p>
+
+<pre><code>git --version
+
+</code></pre>
+<p>and it will launch the installation.</p>
+</li>
+<li><p>Before 10.9 Mavericks</p>
+<p>You have several <a href="https://git-scm.com/download/mac" title="Git Mac Download">options</a>. If you already have <em>Xcode</em> installed, then you already have git. If not, we propose you to stick to the <em>Homebrew</em> option, as it's probably the most practical way to go.</p>
+<p>Homebrew package manager is very easy to use, and provides access to plenty of useful stuff - Firefox, GNU compiler, Qt and many many others.</p>
+<p>To install Homebrew, visit the <a href="https://brew.sh" title="Homebrew">official website</a>, and then just run:</p>
+
+<pre><code>  brew install git
+
+</code></pre>
+<p>after the installation.</p>
+</li>
+</ul>
+<p>Voilà, you are good to go.</p>
+</li>
+<li><p>If you are on Linux, you have even <a href="https://git-scm.com/download/linux" title="Git Linux Download">more options</a>. We propose you simply run</p>
+
+<pre><code>apt-get install git</code></pre>
+</li>
+</ul>
+<p>In all cases, check that Git is installed by running</p>
+
+<pre><code>git --version
+
+</code></pre>
+<p>Output example:</p>
+
+<pre><code>git version 2.24.3 (Apple Git-128)
+
+</code></pre>
+<h3 id="Basic-usage">Basic usage<a class="anchor-link" href="#Basic-usage">&#182;</a></h3><p>Now let's discuss the basic concepts of Git. Create a temporary empty directory (choose a convenient place in your computer). We will make it our first Git project. Let's call it <em>test_git</em>.</p>
+<p>So, we run:</p>
+
+<pre><code>mkdir test_git
+cd test_git
+
+</code></pre>
+<h4 id="Git-repositories">Git repositories<a class="anchor-link" href="#Git-repositories">&#182;</a></h4><p>The whole project with all the history of changes and all the separate branches is stored in so-called <em>Git repository</em>. To create a repository, you have to <code>initialize</code> git in the directory containing your project. This creates a <em>local</em> Git repository, meaning that it currently only exist on your work machine.</p>
+<h5 id="Creating-a-local-Git-repository">Creating a local Git repository<a class="anchor-link" href="#Creating-a-local-Git-repository">&#182;</a></h5><p>In order to initialize an existing local directory as a Git repository, run:</p>
+
+<pre><code>git init
+
+</code></pre>
+<p>You'll get the following output:</p>
+
+<pre><code>Initialized empty Git repository in /path/to/test_git/.git/
+
+</code></pre>
+<p>As it is nicely explained <a href="https://www.educative.io/edpresso/what-is-git?aid=5082902844932096&amp;utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=edpresso-dynamic&amp;gclid=Cj0KCQjw-uH6BRDQARIsAI3I-UdhHN9Z0GJzbOHJxNHWZH-F4atUOf6VG4914ZYxmiU0gajSGIjUH8QaAlNhEALw_wcB" title="Basic Git Tutorial">here</a>, once created, each local Git repo(sitory) contains three abstract zones:</p>
+<ul>
+<li><p>Working space</p>
+<p>Includes all the components of your project in their current states.</p>
+</li>
+<li><p>Staging area</p>
+<p>Imagine now you've introduced some modification to the state of your project, which was the last one you saved. The files, which you want to update as part of your project's history go to the staging area (after committing)</p>
+</li>
+<li><p>Commit area</p>
+<p>Commiting your modification is a way to create a snapshot of the current, newly modified state of your project. Once you've commited your changes, the modified files are now saved in the history of your project.</p>
+</li>
+</ul>
+<p>Let's add a README.md file to our repo. If you're on MacOS/Linux:</p>
+
+<pre><code>vi README.md
+
+</code></pre>
+<p>If you're on Windows:</p>
+
+<pre><code>type nul &gt; README.md
+
+</code></pre>
+<p>Add some content to the README.md file (whathever you want) and save your modifications.</p>
+<p>Now let's learn how to create commits. First, you tell what files to commit:</p>
+
+<pre><code>git add README.md
+
+</code></pre>
+<p>The changes to README.md are not contained in the staging area.</p>
+<p>If you run</p>
+
+<pre><code>git add *
+
+</code></pre>
+<p>then all files which are new or modified will be put in the staging area for potential further commit. It is not a very clean way to go, as you might commit files which get updated at each compilation, and don't need to be tracked, like those stored in .ipynb_checkpoints directory, or object files with extension .o, etc. So always stick to always use the git add function on specific files.</p>
+<p>We are ready to commit. Each commit has to be supplemented with a message:</p>
+
+<pre><code>git commit -m "First commit"
+
+</code></pre>
+<p>You have now recorded in your git history the initial modifications of the README.md file. All the information sits locally on your computer. But we also want to be able to share our work and collaborate on projects (here we also mean being able to send your homeworks to the teaching team !).</p>
+<h5 id="Creating-remote-Git-repository">Creating remote Git repository<a class="anchor-link" href="#Creating-remote-Git-repository">&#182;</a></h5><blockquote><p>To be able to collaborate on any Git project, you need to know how to manage your remote repositories. <a href="https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes">Remote repositories</a> are versions of your project that are hosted on the Internet or network somewhere.</p>
+</blockquote>
+<p>Another reason to keep your data in a remote repo is for the sake of safety. If your computer gets broken, stolen or you accidentally remove the project's folder, then you'll loose all the local data. But if you keep it in a remote repo and update it regularly, then you can recover your whole progress from any other machine.</p>
+<p>There are different services which allow to create and manage remote Git repositories. Throughout the course we will use GitHub.com. It is easy to use and free. Generally speaking, GitHub is a Git repository hosting service. Let's create our first remote repo on GitHub.</p>
+<p>If you don't have GitHub account, you will have to go to GitHub.com and create one. GitHub has a graphical interface allowing you to download files to the repository, create branches, see changes in the latest commit etc. For some purposes, the GitHub interface might be quite convenient, but we advise you against uploading files directly via GitHub. It would make the whole idea of Git meaningless, and ultimately lead you to storing multiple versions of your project at the same time. We suggest that you learn how to update your project over time and keep control over the evolutionary tree of all the changes you make.</p>
+<p>In order to create new GitHub repository, click on <em>New</em>:
+<img src="../figures/CreateRepo.png"></p>
+<p>Choose a name for your repository and set some description. You can make it either public - so that anyone will be able to see it - or private - only the ones you invite as collaborators will be able to see it. Click on <em>Create repository</em>.
+<img src="../figures/CreateRepoSet.png"></p>
+<p>Let's go through a small tutorial describing how you can connect your newly created remote repo to the local one.</p>
+<p>To see, what are the current remote repositories tracked from your local repository, run the following terminal command in your local repository</p>
+
+<pre><code>git remote
+
+</code></pre>
+<p>Of course, this command will output nothing, as we have not yet added any remotes.</p>
+<p>Copy the url of your remote repo. Make sure you've chosen HTTPS format, especially if you have never used SSH.
+<img src="../figures/CopyURL.png"></p>
+<p>Now go back to the terminal window and type (<em>replace <code>yourUserName</code> with your actual Github username</em>):</p>
+
+<pre><code>git remote add origin https://github.com/yourUserName/test_git.git
+
+</code></pre>
+<p>If you then run</p>
+
+<pre><code>git remote
+
+</code></pre>
+<p>it will output <code>origin</code>, which is the name we've assigned to our remote.</p>
+<p>Now you should be able to run</p>
+
+<pre><code>git push -u origin master
+
+</code></pre>
+<p>The normal output should look as follows:</p>
+
+<pre><code>Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 224 bytes | 224.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/yourUserName/test_git.git
+* [new branch]      master -&gt; master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+
+</code></pre>
+<p>Argument <code>-u</code> (equivalent to <code>--set-upstream</code>) means that we want our local branch to track remote branch <code>master</code>.</p>
+<h4 id="Git-branches">Git branches<a class="anchor-link" href="#Git-branches">&#182;</a></h4><blockquote><p>Git branches are effectively a pointer to a snapshot of your changes. When you want to add a new feature or fix a bug—no matter how big or how small—you spawn a new branch to encapsulate your changes. This makes it harder for unstable code to get merged into the main code base, and it gives you the chance to clean up your future's history before merging it into the main branch.</p>
+</blockquote>
+<p>The very first default branch is called <em>master</em>. <em>Master</em> traditionally serves as a branch where you keep the latest, cleanest and the most stable version of your project. It is strongly advised, that you <em>don't ever upload temporary and test changes of your project to master</em>. The best way to go is to create another branch from <em>master</em>, make your modifications while being on the side branch, and then <em>merge</em> this branch into master (if desired, you may then delete the side branch). You have to be sure that the content of <em>Master</em> is working. After all, whenever you want to share your work with external people, they should be confident that they access a 100% reliable product through the master. Of course, very few codes contain no bugs at all. But ideally this is how you should consider your <em>Master</em> release.</p>
+<p>Let's learn how to create branches. First, run:</p>
+
+<pre><code>git branch
+
+</code></pre>
+<p>You'll get the following output:</p>
+
+<pre><code>* master
+
+</code></pre>
+<p>As we said, you're on master. In order to switch between branches you would run <code>git checkout</code> with different arguments. Let's create a new branch called <code>other_branch</code> (or whatever you want). We run:</p>
+
+<pre><code>git checkout -b other_branch
+
+</code></pre>
+<p>Which produces the following output:</p>
+
+<pre><code>Switched to a new branch 'other_branch'
+
+</code></pre>
+<p>Let us now create our first python script - a file "hello.py" with the following content:</p>
+
+<pre><code>print('Hello world!')
+
+</code></pre>
+<p>As you can guess, this command will output the 'Hello world!' string. Test this by running the script:</p>
+
+<pre><code>python3 hello.py
+
+</code></pre>
+<p>Now we, while being on <em>other_branch</em> commit this update to the project and push it to our remote:</p>
+
+<pre><code>git add hello.py
+git commit -m "Hello world script"
+git push
+
+</code></pre>
+<p>The last command should output the error message:</p>
+
+<pre><code>fatal: The current branch other_branch has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin other_branch
+
+</code></pre>
+<p>This is expected. You have realized that there is a difference between local and remote branches. When creating remote repo, we have actually <a href="#notice">manually set remote branch <em>master</em> to track local branch <em>master</em></a>*. Git hints us that we are supposed to do the same for the <em>other_branch</em>, so we run:</p>
+
+<pre><code>git push -u origin other_branch
+
+</code></pre>
+<p>Now it worked. If we go back to the master branch, we'll see that our Python script is not there.</p>
+
+<pre><code>git checkout master
+
+</code></pre>
+<p>On Mac/Unix:</p>
+
+<pre><code>ls
+
+</code></pre>
+<p>On Windows:</p>
+
+<pre><code>dir
+
+</code></pre>
+<p>So, we have actually separated two different versions of our project into two branches. But let's say we are confident, that out <em>other_branch</em> has been perfected, and that we want to integrate the modifications in <em>master</em>. To <code>merge</code> them, we type:</p>
+
+<pre><code>git merge other_branch
+
+</code></pre>
+<p>Check the list of files on <em>master</em> now - you'll see 'hello.py' among them. We are free to delete <em>other_branch</em>:</p>
+
+<pre><code>git branch -d other_branch
+
+</code></pre>
+<p>The output should look similar to this:</p>
+
+<pre><code>Deleted branch other_branch (was be3cca2).
+
+</code></pre>
+<p>We have learnt the very basics of Git, now let's clean up, as we don't need to store remote <em>test_git anymore</em>. In the menu for your repo on GitHub.com click on <em>Settings</em>, scroll to the very bottom, and click on <em>Delete this repository</em>.</p>
+<div class="notice">*<a name="notice">We advice, you always set the same names for the remote branch and the local branch, that is tracking this remote, until you're an experienced Git user, as the same name is required for pushing, but not necessary for pulling.</a></div><h2 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h2><p>In this notebook we have fully set up the numerical tools required for the course. On top of that, we have learned the basics of conda virtual environments and Git. We are ready to get started in learning how to numerically solve partial differential equations.</p>
+<h2 id="Troubleshooting">Troubleshooting<a class="anchor-link" href="#Troubleshooting">&#182;</a></h2><ul>
+<li><a name="troubleshooting1"> `jupyter notebook` command is not recognized</a></li>
+</ul>
+<p>It most surely happens, because <code>jupyter notebook</code> command is supposed to run the binary file "jupyter-notebook", which intends to run the program, but this binary file is located in a directory different from the one you are trying to open it.</p>
+<p>In order to be able to run Jupyter Notebook from any directory, we have to run the following command:</p>
+
+<pre><code>export PATH=/path/to/anaconda3/bin:$PATH
+
+</code></pre>
+<p>But this will make the files from anaconda3/bin accesible only in the active terminal window. Once you terminate it, you will have to rerun above command for each new terminal session. The solution is to add the path to anaconda3/bin to your .bashrc file.</p>
+<blockquote><p>The [.bashrc][12] file is a script file that’s executed when a user logs in. The file itself contains a series of configurations for the terminal session. This includes setting up or enabling: coloring, completion, shell history, command aliases, and more.</p>
+</blockquote>
+<p>So that each time you start a new terminal session, this command will be executed. To open .bashrc with in-terminal text editor you can type:</p>
+
+<pre><code>vi .bashrc
+
+</code></pre>
+<p>Or, if you prefer different text editor, you can use it.</p>
+<p>If .bashrc isn't there, it is possible that it has a different name - .zshrc, for example.</p>
+<p>Add <code>export PATH=/path/to/anaconda3/bin:$PATH</code> to your .bashrc and save it. To get it working either open new terminal window, or run <code>source .bashrc</code> in the one, which is opened.</p>
+<p>Now <code>jupyter notebook</code> command should work.</p>
 
 </div>
 </div>

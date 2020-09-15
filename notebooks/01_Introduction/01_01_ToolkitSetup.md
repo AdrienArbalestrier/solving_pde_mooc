@@ -13,6 +13,12 @@ jupyter:
     name: python3
 ---
 
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+  window.status = "finished-typesetting";
+});
+</script>
+
 <div class="copyright" property="vk:rights">&copy;
   <span property="vk:dateCopyrighted">2020</span>
   <span property="vk:publisher">B. Knaepen & Y. Velizhanina</span>
@@ -449,12 +455,4 @@ Now `jupyter notebook` command should work.
 from IPython.core.display import HTML
 css_file = '../styles/notebookstyle.css'
 HTML(open(css_file, 'r').read())
-```
-
-```python
-
-```
-
-```python
-
 ```
